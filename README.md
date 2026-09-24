@@ -1,10 +1,12 @@
 # 4×4 6T SRAM Array Design in LTspice
 
+![4×4 SRAM Array](images/03_4x4_SRAM_array.png)
+
 ## Overview
 
 This project explores the transistor-level design and simulation of a **6T SRAM cell** and its expansion into a functional **4×4 SRAM array** using LTspice.
 
-The project was developed progressively from a single SRAM cell to a reusable hierarchical cell, a 2×2 validation array, and finally a 16-cell 4×4 memory array.
+The design was developed progressively from a single SRAM cell to a reusable hierarchical cell, a 2×2 validation array, and finally a 16-cell 4×4 memory array.
 
 The main goals were to understand:
 
@@ -52,17 +54,17 @@ The SRAM cell consists of:
 * Differential bitlines `BL` and `BLB`
 * Wordline `WL`
 
-Two cross-coupled CMOS inverters create the bistable storage structure required to store one binary bit.
+Two cross-coupled CMOS inverters create a bistable storage structure capable of storing one binary bit.
 
 ![6T SRAM Cell](images/01_single_6T_SRAM_cell.png)
 
-The individual SRAM cell was first tested independently to verify write and hold behavior before being reused in larger arrays.
+The individual cell was first tested independently to verify write and hold behavior before being reused in larger arrays.
 
 ---
 
 ## Hierarchical SRAM Cell
 
-After validating the transistor-level cell, the SRAM circuit was converted into a reusable LTspice hierarchical symbol.
+After validating the transistor-level SRAM cell, the design was converted into a reusable LTspice hierarchical symbol.
 
 The external ports are:
 
@@ -71,7 +73,9 @@ The external ports are:
 * `BL`
 * `BLB`
 
-This allowed the same verified 6T SRAM cell to be reused throughout the 2×2 and 4×4 arrays without manually rebuilding the transistor-level circuit.
+The internal storage nodes `Q` and `QB` remain inside the SRAM cell.
+
+This hierarchical approach allowed the same verified 6T SRAM circuit to be reused throughout the 2×2 and 4×4 arrays without manually rebuilding the six-transistor circuit for each memory cell.
 
 ---
 
@@ -81,7 +85,7 @@ A 2×2 SRAM array was constructed as an intermediate validation step.
 
 Cells in the same row share a common wordline, while cells in the same column share a differential bitline pair.
 
-The test patterns were:
+The tested patterns were:
 
 | Row   | Stored Data |
 | ----- | ----------- |
@@ -96,15 +100,15 @@ This stage was used to verify:
 * Row isolation
 * Data retention
 
-![2x2 SRAM Array](images/02_2x2_SRAM_array.png)
+![2×2 SRAM Array](images/02_2x2_SRAM_array.png)
 
 ---
 
 ## 4×4 SRAM Array
 
-The validated structure was expanded to a 4×4 array containing 16 SRAM cells.
+The validated 2×2 structure was expanded into a 4×4 array containing 16 SRAM cells.
 
-The array uses:
+The final array uses:
 
 * `WL0` – `WL3`
 * `BL0 / BLB0`
@@ -112,15 +116,13 @@ The array uses:
 * `BL2 / BLB2`
 * `BL3 / BLB3`
 
-![4x4 SRAM Array](images/03_4x4_SRAM_array.png)
-
-Each wordline selects one complete row of four SRAM cells, allowing a 4-bit word to be written in parallel.
+Each wordline selects one complete row of four SRAM cells, allowing one 4-bit word to be written in parallel.
 
 ---
 
 ## Write Timing
 
-The rows were written sequentially using separate wordline pulses.
+The four rows were written sequentially using separate wordline pulses.
 
 | Wordline | Approximate Active Interval |
 | -------- | --------------------------- |
@@ -129,7 +131,7 @@ The rows were written sequentially using separate wordline pulses.
 | WL2      | 9–11 ns                     |
 | WL3      | 13–15 ns                    |
 
-Piecewise-linear voltage sources were used on the bitlines so that a different 4-bit pattern could be presented before each row was selected.
+Piecewise-linear voltage sources were used on the bitlines so that a different 4-bit data pattern was applied before each row was selected.
 
 ---
 
@@ -137,23 +139,23 @@ Piecewise-linear voltage sources were used on the bitlines so that a different 4
 
 ### Row 0 — `1010`
 
-![Row 0 1010](images/04_row0_1010_waveform.png)
+![Row 0 — 1010](images/04_row0_1010_waveform.png)
 
 ### Row 1 — `0110`
 
-![Row 1 0110](images/05_row1_0110_waveform.png)
+![Row 1 — 0110](images/05_row1_0110_waveform.png)
 
 ### Row 2 — `1100`
 
-![Row 2 1100](images/06_row2_1100_waveform.png)
+![Row 2 — 1100](images/06_row2_1100_waveform.png)
 
 ### Row 3 — `0011`
 
-![Row 3 0011](images/07_row3_0011_waveform.png)
+![Row 3 — 0011](images/07_row3_0011_waveform.png)
 
-The simulations confirmed that each row retained its stored value after its wordline was disabled.
+The simulations confirmed that each row stored its intended 4-bit word and retained that value after its corresponding wordline was disabled.
 
-Previously written rows also maintained their data while later rows were being written.
+Previously written rows also maintained their stored data while later rows were being written.
 
 ---
 
@@ -163,7 +165,7 @@ The project verified:
 
 * Logic `0` and logic `1` storage
 * SRAM write operation
-* Data retention after WL is disabled
+* Data retention after the wordline is disabled
 * Multi-bit parallel writing
 * Differential bitline operation
 * Independent row selection
@@ -176,17 +178,17 @@ The project verified:
 
 ## Design Iterations and Debugging
 
-Several design iterations were required while scaling the circuit from a single SRAM cell to the final array.
+Several design iterations were required while scaling the circuit from a single SRAM cell to the final 4×4 array.
 
 ### SRAM Cell Simplification
 
-The original test circuit contained additional circuitry used during early experiments. Before creating the hierarchical SRAM block, the design was reduced to the core six-transistor storage cell.
+The original test circuit contained additional circuitry used during early experiments. Before creating the hierarchical SRAM block, the design was reduced to the core six-transistor SRAM storage cell.
 
-This helped separate the SRAM storage element from external test and peripheral circuitry.
+This separated the SRAM storage element from external test circuitry.
 
 ### Bitline Organization
 
-During early array construction, the bitline connections were initially organized incorrectly.
+During early array construction, the bitlines were initially organized incorrectly.
 
 The final structure was corrected so that:
 
@@ -195,21 +197,21 @@ The final structure was corrected so that:
 
 ### Hierarchical Node Observation
 
-When the SRAM cell was converted into a hierarchical LTspice block, internal `Q` and `QB` nodes were initially not visible in the waveform viewer.
+After converting the SRAM cell into a hierarchical LTspice block, the internal `Q` and `QB` nodes were initially not visible in the waveform viewer.
 
-Subcircuit node voltage saving was enabled so that the internal storage states of each SRAM instance could be observed directly.
+Subcircuit node-voltage saving was enabled so that the internal state of each SRAM cell could be observed directly.
 
 ### Write Verification
 
-Some SRAM cells initially started in the same state as the intended write value, making it difficult to confirm whether an actual write transition had occurred.
+Some cells initially started in the same state as the intended write value, making it difficult to determine whether an actual write transition had occurred.
 
-Opposite initial conditions were applied during validation to confirm that the write operation could actively switch the stored state.
+Opposite initial conditions were therefore applied during validation to confirm that the write operation could actively change the stored state.
 
 ### 4×4 Bitline Control
 
-Early 4×4 simulations produced unintended or identical cell states when the bitlines were not independently driven for each write period.
+Early 4×4 simulations produced unintended or identical cell states when the bitlines were not independently driven for each write interval.
 
-Piecewise-linear bitline sources were introduced so that each row received the intended 4-bit data pattern during its wordline activation interval.
+Piecewise-linear bitline sources were introduced so that each row received the intended 4-bit pattern during its wordline activation period.
 
 ---
 
@@ -254,7 +256,7 @@ Sense Amplifier
 Digital Output
 ```
 
-SRAM is commonly used in high-speed on-chip memory structures such as processor caches, embedded memory blocks, and local buffers.
+SRAM is commonly used in high-speed on-chip memories such as processor caches, embedded memory blocks, and local buffers.
 
 ---
 
@@ -313,7 +315,8 @@ Possible extensions include:
 │   ├── 04_row0_1010_waveform.png
 │   ├── 05_row1_0110_waveform.png
 │   ├── 06_row2_1100_waveform.png
-│   └── 07_row3_0011_waveform.png
+│   ├── 07_row3_0011_waveform.png
+│   └── sram_github_images.zip
 │
 ├── ltspice/
 │   ├── SRAM_Cell.asc
@@ -329,7 +332,7 @@ Possible extensions include:
 
 ## Project Report
 
-A more detailed explanation of the design process, simulation methodology, results, limitations, and future work is available in the full project report:
+A detailed explanation of the design process, simulation methodology, results, limitations, and future work is available in the full project report:
 
 [View the Full Project Report](report/4x4_6T_SRAM_Array_Report.pdf)
 
@@ -346,8 +349,15 @@ A more detailed explanation of the design process, simulation methodology, resul
 
 ## Summary
 
-This project demonstrates the progression from an individual CMOS SRAM storage cell to a small functional memory array.
+This project demonstrates the progression from an individual CMOS SRAM storage cell to a functional small-scale memory array.
 
-A transistor-level 6T SRAM cell was designed, simulated, converted into a reusable hierarchical block, and expanded into 2×2 and 4×4 SRAM arrays.
+A transistor-level 6T SRAM cell was designed and simulated, converted into a reusable hierarchical block, and expanded first into a 2×2 validation array and finally into a 4×4 SRAM array.
 
-The final 16-cell array successfully stored four independent 4-bit words while maintaining previously written data during subsequent write operations.
+The final 16-cell array successfully stored four independent 4-bit words:
+
+* `1010`
+* `0110`
+* `1100`
+* `0011`
+
+The stored values remained stable after each wordline was disabled and while subsequent rows were being written.
