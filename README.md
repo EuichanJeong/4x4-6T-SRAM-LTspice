@@ -1,6 +1,6 @@
 # 4×4 6T SRAM Array Design in LTspice
 
-![4×4 SRAM Array](images/03_4x4_SRAM_array.png)
+![4×4 SRAM Array](Images/03_4x4_SRAM_array.png)
 
 ## Overview
 
@@ -56,7 +56,7 @@ The SRAM cell consists of:
 
 Two cross-coupled CMOS inverters create a bistable storage structure capable of storing one binary bit.
 
-![6T SRAM Cell](images/01_single_6T_SRAM_cell.png)
+![6T SRAM Cell](Images/01_single_6T_SRAM_cell.png)
 
 The individual cell was first tested independently to verify write and hold behavior before being reused in larger arrays.
 
@@ -100,7 +100,7 @@ This stage was used to verify:
 * Row isolation
 * Data retention
 
-![2×2 SRAM Array](images/02_2x2_SRAM_array.png)
+![2×2 SRAM Array](Images/02_2x2_SRAM_array.png)
 
 ---
 
@@ -117,6 +117,8 @@ The final array uses:
 * `BL3 / BLB3`
 
 Each wordline selects one complete row of four SRAM cells, allowing one 4-bit word to be written in parallel.
+
+![4×4 SRAM Array](Images/03_4x4_SRAM_array.png)
 
 ---
 
@@ -139,11 +141,11 @@ Piecewise-linear voltage sources were used on the bitlines so that a different 4
 
 ### Row 0 — `1010`
 
-![Row 0 — 1010](images/04_row0_1010_waveform.png)
+![Row 0 — 1010](Images/04_row0_1010_waveform.png)
 
 ### Row 1 — `0110`
 
-![Row 1 — 0110](images/05_row1_0110_waveform.png)
+![Row 1 — 0110](Images/05_row1_0110_waveform.png)
 
 ### Row 2 — `1100`
 
@@ -188,7 +190,7 @@ This separated the SRAM storage element from external test circuitry.
 
 ### Bitline Organization
 
-During early array construction, the bitlines were initially organized incorrectly.
+During early array construction, the bitline connections were initially organized incorrectly.
 
 The final structure was corrected so that:
 
@@ -308,25 +310,37 @@ Possible extensions include:
 │
 ├── README.md
 │
-├── images/
+├── Images/
 │   ├── 01_single_6T_SRAM_cell.png
 │   ├── 02_2x2_SRAM_array.png
 │   ├── 03_4x4_SRAM_array.png
 │   ├── 04_row0_1010_waveform.png
 │   ├── 05_row1_0110_waveform.png
 │   ├── 06_row2_1100_waveform.png
-│   ├── 07_row3_0011_waveform.png
-│   └── sram_github_images.zip
+│   └── 07_row3_0011_waveform.png
 │
-├── ltspice/
+├── LTSpice/
 │   ├── SRAM_Cell.asc
 │   ├── SRAM_Cell.asy
 │   ├── 2x2_SRAM_ARRAY.asc
 │   └── 4x4_SRAM_ARRAY.asc
 │
 └── report/
-    └── 4x4_6T_SRAM_Array_Report.pdf
+    └── 4×4_6T_SRAM_Array_Report.pdf
 ```
+
+---
+
+## LTspice Files
+
+The complete LTspice design files are available in the [`LTSpice`](LTSpice/) directory.
+
+Key files include:
+
+* [`SRAM_Cell.asc`](LTSpice/SRAM_Cell.asc) — transistor-level 6T SRAM cell
+* [`SRAM_Cell.asy`](LTSpice/SRAM_Cell.asy) — reusable hierarchical SRAM symbol
+* [`2x2_SRAM_ARRAY.asc`](LTSpice/2x2_SRAM_ARRAY.asc) — 2×2 validation array
+* [`4x4_SRAM_ARRAY.asc`](LTSpice/4x4_SRAM_ARRAY.asc) — final 4×4 SRAM array
 
 ---
 
@@ -334,7 +348,7 @@ Possible extensions include:
 
 A detailed explanation of the design process, simulation methodology, results, limitations, and future work is available in the full project report:
 
-[View the Full Project Report](report/4x4_6T_SRAM_Array_Report.pdf)
+[View the Full Project Report](report/4×4_6T_SRAM_Array_Report.pdf)
 
 ---
 
