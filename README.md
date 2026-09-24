@@ -147,11 +147,11 @@ Piecewise-linear voltage sources were used on the bitlines so that a different 4
 
 ### Row 2 — `1100`
 
-![Row 2 — 1100](images/06_row2_1100_waveform.png)
+![Row 2 — 1100](Images/06_row2_1100_waveform.png)
 
 ### Row 3 — `0011`
 
-![Row 3 — 0011](images/07_row3_0011_waveform.png)
+![Row 3 — 0011](Images/07_row3_0011_waveform.png)
 
 The simulations confirmed that each row stored its intended 4-bit word and retained that value after its corresponding wordline was disabled.
 
